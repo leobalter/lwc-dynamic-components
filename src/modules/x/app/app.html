@@ -1,0 +1,48 @@
+<template>
+    <h1>Opportunities!</h1>
+    <div class="tabs">
+        <lwc:component lwc:is={dynamic.activity}></lwc:component>
+        <lwc:component lwc:is={dynamic.details}></lwc:component>
+        <button onclick={loadComponents}>Load LWCs</button>
+    </div>
+
+    <p>Before loading:</p>
+    <pre>
+        &lt;template&gt;<br>
+            &nbsp;&nbsp;&lt;h1&gt;Opportunities!&lt;/h1&gt;<br>
+            &nbsp;&nbsp;&lt;div class=&quot;tabs&quot;&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;lwc:component lwc:is=&#123;dynamic.activity}&gt;&lt;/lwc:component&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;lwc:component lwc:is=&#123;dynamic.details}&gt;&lt;/lwc:component&gt;<br>
+                &nbsp;&nbsp;&lt;button onclick=&#123;loadComponents}&gt;Load LWCs&lt;/button&gt;<br>
+            &nbsp;&nbsp;&lt;/div&gt;<br>
+        &lt;/template&gt;<br>
+    </pre>
+
+    <p>After loading:</p>
+    <pre>
+        &lt;template&gt;<br>
+            &nbsp;&nbsp;&lt;h1&gt;Opportunities!&lt;/h1&gt;<br>
+            &nbsp;&nbsp;&lt;div class=&quot;tabs&quot;&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;x-activity&gt;&lt;/x-activity&gt;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&lt;x-details&gt;&lt;/x-details&gt;<br>
+                &nbsp;&nbsp;&lt;button onclick=&#123;loadComponents}&gt;Load LWCs&lt;/button&gt;<br>
+            &nbsp;&nbsp;&lt;/div&gt;<br>
+        &lt;/template&gt;<br>
+    </pre>
+
+    <p>JavaScript</p>
+    <pre>
+        async loadComponents() &#123;<br>
+            &nbsp;&nbsp;/* ... */<br>
+            <br>
+            &nbsp;&nbsp;const [ activity, details ] = (await Promise.all([<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;import('x/activity'),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;import('x/details'),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;])).map(ns =&gt; ns.default);<br>
+            <br>
+            &nbsp;&nbsp;// the LWC constructor is used by the lwc:is attribute of &lt;lwc:component /&gt;<br>
+            &nbsp;&nbsp;this.dynamic.activity = activity;<br>
+            &nbsp;&nbsp;this.dynamic.details = details;<br>
+        }<br>
+</pre>
+</template>
