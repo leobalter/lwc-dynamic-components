@@ -14,17 +14,17 @@ export default class App extends LightningElement {
       {
           key: 0,
           name: 'Home',
-          cmp: 'home'
+          cmp: () => import('x/home')
       },
       {
           key: 1,
           name: 'Activities',
-          cmp: 'activities'
+          cmp: () => import('x/activities')
       },
       {
           key: 2,
           name: 'Details',
-          cmp: 'details'
+          cmp: () => import('x/details')
       },
   ];
 
@@ -33,30 +33,17 @@ export default class App extends LightningElement {
   }
 
   async loadComponents({ target: { value }}) {
-    if (this[loading]) {
-      return;
-    }
-
     const cmp = this.tabs[value].cmp;
-
-    // Uses cached component if it's already loaded
-    if (typeof cmp !== 'string') {
-      this.componentConstructor = cmp;
-      return;
-    }
 
     // awaits for the connectedCallback to run
     this[loading] = true;
     await this[connected];
 
     // Uses the default export from the LWC
-    const { defalt: loaded } = await import(`x/${cmp}`);
+    const { defalt: loaded } = await cmp();
 
     // the LWC constructor is used by the lwc:is attribute of <lwc:component />
     this.componentConstructor = loaded;
-
-    // Store loaded component to avoid new imports
-    his.tabs[value].cmp = loaded;
 
     // reloading is now available;
     this[loading] = false;
