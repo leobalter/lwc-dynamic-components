@@ -40,10 +40,10 @@ export default class App extends LightningElement {
     await this[connected];
 
     // Uses the default export from the LWC
-    const { defalt: loaded } = await cmp();
+    const loaded = await cmp();
 
     // the LWC constructor is used by the lwc:is attribute of <lwc:component />
-    this.componentConstructor = loaded;
+    this.componentConstructor = loaded.default;
 
     // reloading is now available;
     this[loading] = false;
